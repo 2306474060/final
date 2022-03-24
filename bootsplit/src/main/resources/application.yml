@@ -1,0 +1,65 @@
+
+server:
+  port: 8081
+
+spring:
+  mvc:
+    static-path-pattern: /static/**
+
+  datasource:
+    username: root
+    password: 1234
+    url: jdbc:mysql://localhost:3306/split?characterEncoding=UTF-8&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    type: com.alibaba.druid.pool.DruidDataSource
+      # ???????????????????????
+    # ???????????
+    initial-size: 5
+    min-idle: 5
+    max-active: 20
+    # ?????????????
+    max-wait: 60000
+    # ??????????????????????????????
+    time-between-eviction-runs-millis: 60000
+    # ??????????????????????
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 1 FROM DUAL
+    test-while-idle: true
+    test-on-borrow: false
+    test-on-return: false
+    # ??PSCache??????????PSCache???
+    pool-prepared-statements: true
+    max-pool-prepared-statement-per-connection-size: 20
+    # ????????? Filter???????? SQL ?????wall ?????   ?? log4j
+    filters: stat,wall,log4j   #???log4j
+    use-global-data-source-stat: true
+    # ??connectProperties?????mergeSql????SQL??
+    connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  web:
+    resources:
+      static-locations: classpath:/static/,classpath:/templates/,classpath:/views/
+
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty
+      #???????
+      column-underline: true
+      #??????
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      db-type: mysql
+    refresh: false
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+
+pagehelper:
+  helperDialect: postgresql #??sql??
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSq
